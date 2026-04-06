@@ -1616,7 +1616,7 @@ MonoBehaviour:
   - user-read-private
   - user-read-recently-played
   - user-top-read
-  RedirectUri: http://localhost:5000/callback
+  RedirectUri: https://localhost:5000/callback
   ServerPort: 5000
   Length: 100
   Verifier: 

@@ -40,7 +40,7 @@ public class ImplicitGrant_Authentification : MonoBehaviour, IServiceAuthenticat
         if (_authConfig.RedirectUri == string.Empty && _authConfig.ServerPort <= 0)
         {
             // Problem with user's config, use default values
-            _authConfig.RedirectUri = "http://localhost:5000/callback";
+            _authConfig.RedirectUri = "https://localhost:5000/callback";
             _authConfig.ServerPort = 5000;
             return;
         }

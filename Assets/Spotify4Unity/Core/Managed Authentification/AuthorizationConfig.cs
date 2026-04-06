@@ -21,7 +21,7 @@ public class AuthorizationConfig : MonoBehaviour
     /// <summary>
     /// The redirect uri used to pass Spotify authentification onto your app. This uri needs to be in your Spotify Dashboard. Dont change this if you don't know what you are doing.
     /// </summary>
-    public string RedirectUri = "http://localhost:5000/callback";
+    public string RedirectUri = "https://localhost:5000/callback";
 
     /// <summary>
     /// Port number to use for recieving Spotify auth from the browser. Should be the same value in your Redirect uri
