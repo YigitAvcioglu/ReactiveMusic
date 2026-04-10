@@ -19,6 +19,7 @@ public class SinglePlaylistSelectableTrack : MonoBehaviour
 
     private string _contextUri;
     private FullTrack _track;
+    private List<string> _playlistUrisContext;
 
     private void Start()
     {
@@ -34,9 +35,10 @@ public class SinglePlaylistSelectableTrack : MonoBehaviour
         }
     }
 
-    public void SetTrack(FullTrack t, string contextUri)
+    public void SetTrack(FullTrack t, string contextUri, List<string> playlistUrisContext = null)
     {
         _contextUri = contextUri;
+        _playlistUrisContext = playlistUrisContext;
         // Set track and Update
         _track = t;
 
@@ -73,13 +75,54 @@ public class SinglePlaylistSelectableTrack : MonoBehaviour
             SpotifyClient client = SpotifyService.Instance.GetSpotifyClient();
             if (client != null)
             {
-                // Play track in context of the playlist
-                PlayerResumePlaybackRequest request = new PlayerResumePlaybackRequest()
+                PlayerResumePlaybackRequest request;
+                if (!string.IsNullOrEmpty(_contextUri))
                 {
-                    ContextUri = _contextUri,
-                    OffsetParam = new PlayerResumePlaybackRequest.Offset() { Uri = _track.Uri },
-                };
-                await client.Player.ResumePlayback(request);
+                    // Play track in context of the playlist
+                    request = new PlayerResumePlaybackRequest()
+                    {
+                        ContextUri = _contextUri,
+                        OffsetParam = new PlayerResumePlaybackRequest.Offset() { Uri = _track.Uri },
+                    };
+                }
+                else if (_playlistUrisContext != null && _playlistUrisContext.Count > 0)
+                {
+                    request = new PlayerResumePlaybackRequest()
+                    {
+                        Uris = _playlistUrisContext,
+                        OffsetParam = new PlayerResumePlaybackRequest.Offset() { Uri = _track.Uri },
+                    };
+                }
+                else
+                {
+                    // Liked songs have no context URI, play directly
+                    request = new PlayerResumePlaybackRequest()
+                    {
+                        Uris = new List<string>() { _track.Uri },
+                    };
+                }
+                
+                try 
+                {
+                    await client.Player.ResumePlayback(request);
+                }
+                catch (System.Exception)
+                {
+                    try 
+                    {
+                        var devices = await client.Player.GetAvailableDevices();
+                        if (devices != null && devices.Devices.Count > 0)
+                        {
+                            var targetDevice = devices.Devices.Find(d => d.IsActive) ?? devices.Devices[0];
+                            request.DeviceId = targetDevice.Id;
+                            await client.Player.ResumePlayback(request);
+                        }
+                    }
+                    catch (System.Exception ex2)
+                    {
+                        Debug.LogWarning("Spotify App | Failed to play playlist song even with available devices fallback. " + ex2.Message);
+                    }
+                }
 
                 LogTrackChange("Playing track");
             }

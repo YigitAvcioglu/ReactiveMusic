@@ -101,12 +101,37 @@ public class LikedSongsController : ViewControllerBase
             }
         }
 
-        foreach (SavedTrack savedTrack in _allSavedTracks)
+        // Pre-calculate URIs array to support queueing for Next/Previous functionality
+        System.Collections.Generic.List<string> allUris = new System.Collections.Generic.List<string>();
+        for (int i = 0; i < _allSavedTracks.Count; i++) {
+            allUris.Add(_allSavedTracks[i].Track.Uri);
+        }
+
+        for (int i = 0; i < _allSavedTracks.Count; i++)
         {
+            SavedTrack savedTrack = _allSavedTracks[i];
             GameObject go = Instantiate(_songPrefab, _songsParent);
 
             SinglePlaylistSelectableTrack trackController = go.GetComponent<SinglePlaylistSelectableTrack>();
-            trackController.SetTrack(savedTrack.Track, "");
+            
+            // Spotify API allows maximum 100 URIs in a play request.
+            // Setup a window of 50 previous and 50 next tracks so Next/Prev buttons work.
+            int startIndex = System.Math.Max(0, i - 50);
+            int count = System.Math.Min(100, allUris.Count - startIndex);
+            var passedUris = allUris.GetRange(startIndex, count);
+
+            trackController.SetTrack(savedTrack.Track, "", passedUris);
+
+            // --- Lazerle Tiklanabilmesi Icin Liked Songs Sarkilarina VR Destegi Ekle ---
+            UnityEngine.UI.Button[] buttons = go.GetComponentsInChildren<UnityEngine.UI.Button>(true);
+            foreach(var b in buttons)
+            {
+                if (b.GetComponent<VRButtonLinker>() == null)
+                {
+                    b.gameObject.AddComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable>();
+                    b.gameObject.AddComponent<VRButtonLinker>();
+                }
+            }
         }
 
         // Get height of prefab

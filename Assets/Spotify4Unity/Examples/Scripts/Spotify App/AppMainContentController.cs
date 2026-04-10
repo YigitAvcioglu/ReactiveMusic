@@ -15,6 +15,7 @@ public enum Views
 
 public class AppMainContentController : MonoBehaviour
 {
+    public Action<Views> OnViewChanged;
     /// <summary>
     /// All prefabs for every view. Need to be ordered by their number in Views enum
     /// </summary>
@@ -64,6 +65,7 @@ public class AppMainContentController : MonoBehaviour
 
     private MonoBehaviour SetViewFromEnum(Views viewEnum, Action<ViewControllerBase> intermediateActn = null)
     {
+        OnViewChanged?.Invoke(viewEnum);
         if (_currentViewController != null)
         {
             Destroy(_currentViewController.gameObject);
@@ -83,6 +85,28 @@ public class AppMainContentController : MonoBehaviour
                 Debug.LogError($"View '{viewEnum}' doesn't inherit from ViewControllerBase!");
             }
             intermediateActn?.Invoke(_currentViewController);
+
+            // --- Dinamik İçeriklere VR Lazer Desteği Ekle ---
+            // Spawn edilen UI içerisindeki standart buton ve girdi alanlarına linkleri ekle.
+            UnityEngine.UI.Button[] buttons = viewGO.GetComponentsInChildren<UnityEngine.UI.Button>(true);
+            foreach(var b in buttons)
+            {
+                if (b.GetComponent<VRButtonLinker>() == null)
+                {
+                    b.gameObject.AddComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable>();
+                    b.gameObject.AddComponent<VRButtonLinker>();
+                }
+            }
+
+            UnityEngine.UI.InputField[] inputFields = viewGO.GetComponentsInChildren<UnityEngine.UI.InputField>(true);
+            foreach(var i in inputFields)
+            {
+                if (i.GetComponent<VRButtonLinker>() == null)
+                {
+                    i.gameObject.AddComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable>();
+                    i.gameObject.AddComponent<VRButtonLinker>();
+                }
+            }
 
             return _currentViewController;
         }

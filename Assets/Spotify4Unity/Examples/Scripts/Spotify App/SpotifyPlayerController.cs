@@ -47,8 +47,10 @@ public class SpotifyPlayerController : SpotifyPlayerListener
     private bool _currentItemIsInLibrary;
     // Did the user mouse down on the progress slider to edit the progress
     private bool _progressStartDrag = false;
+    private bool _volumeStartDrag = false;
     // Current progress value when user is sliding the progress
     private float _progressDragNewValue = -1.0f;
+    private float _volumeDragNewValue = -1.0f;
     // Last volume value before mute/unmute
     private int _volumeLastValue = -1;
 
@@ -65,15 +67,24 @@ public class SpotifyPlayerController : SpotifyPlayerListener
         if (_playPauseButton != null)
         {
             _playPauseButton.onClick.AddListener(() => this.OnPlayPauseClicked());
+            Debug.Log("[SpotifyPlayerController] PlayPause listener eklendi.");
         }
+        else Debug.LogError("[SpotifyPlayerController] _playPauseButton NULL! Listener eklenemedi.");
+
         if (_previousButton != null)
         {
             _previousButton.onClick.AddListener(() => this.OnPreviousClicked());
+            Debug.Log("[SpotifyPlayerController] Previous listener eklendi.");
         }
+        else Debug.LogError("[SpotifyPlayerController] _previousButton NULL! Listener eklenemedi.");
+
         if (_nextButton != null)
         {
             _nextButton.onClick.AddListener(() => this.OnNextClicked());
+            Debug.Log("[SpotifyPlayerController] Next listener eklendi.");
         }
+        else Debug.LogError("[SpotifyPlayerController] _nextButton NULL! Listener eklenemedi.");
+
         if (_shuffleButton != null)
         {
             _shuffleButton.onClick.AddListener(() => this.OnToggleShuffle());
@@ -119,6 +130,45 @@ public class SpotifyPlayerController : SpotifyPlayerListener
             entry.callback.AddListener(this.OnProgressSliderMouseUp);
             eventTrigger.triggers.Add(entry);
         }
+
+        if (_volumeSlider != null)
+        {
+            _volumeSlider.wholeNumbers = true;
+            _volumeSlider.interactable = true;
+            _volumeSlider.onValueChanged.AddListener(this.OnVolumeSliderValueChanged);
+
+            EventTrigger eventTrigger = _volumeSlider.gameObject.GetComponent<EventTrigger>();
+            if (eventTrigger == null) eventTrigger = _volumeSlider.gameObject.AddComponent<EventTrigger>();
+
+            EventTrigger.Entry entryDown = new EventTrigger.Entry { eventID = EventTriggerType.PointerDown };
+            entryDown.callback.AddListener(this.OnVolumeSliderMouseDown);
+            eventTrigger.triggers.Add(entryDown);
+
+            EventTrigger.Entry entryUp = new EventTrigger.Entry { eventID = EventTriggerType.PointerUp };
+            entryUp.callback.AddListener(this.OnVolumeSliderMouseUp);
+            eventTrigger.triggers.Add(entryUp);
+        }
+
+        // --- Lazerle tiklanabilmesi icin butonlara ve sliderlara VR destegi ekle ---
+        Button[] allButtons = new Button[] { _playPauseButton, _previousButton, _nextButton, _shuffleButton, _repeatButton, _muteButton, _addToLibraryButton };
+        foreach (var b in allButtons)
+        {
+            if (b != null && b.GetComponent<VRButtonLinker>() == null)
+            {
+                b.gameObject.AddComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable>();
+                b.gameObject.AddComponent<VRButtonLinker>();
+            }
+        }
+        
+        Slider[] allSliders = new Slider[] { _currentProgressSlider, _volumeSlider };
+        foreach (var s in allSliders)
+        {
+            if (s != null && s.GetComponent<VRSliderLinker>() == null)
+            {
+                s.gameObject.AddComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable>();
+                s.gameObject.AddComponent<VRSliderLinker>();
+            }
+        }
     }
 
     private void Update()
@@ -137,20 +187,28 @@ public class SpotifyPlayerController : SpotifyPlayerListener
             {
                 _volumeSlider.minValue = 0;
                 _volumeSlider.maxValue = 100;
-                _volumeSlider.value = context.Device.VolumePercent.Value;
+                if (!_volumeStartDrag && context.Device.VolumePercent.HasValue)
+                {
+                    _volumeSlider.value = context.Device.VolumePercent.Value;
+                }
             }
 
             // Update play/pause btn sprite with correct play/pause sprite
             if (_playPauseButton != null)
             {
-                Image playPauseImg = _playPauseButton.transform.GetChild(0).GetComponent<Image>();
+                Transform iconTrans = _playPauseButton.transform.GetChild(0);
+                Image playPauseImg = iconTrans.GetComponent<Image>();
+                Text playPauseTxt = iconTrans.GetComponentInChildren<Text>();
+
                 if (context.IsPlaying)
                 {
-                    playPauseImg.sprite = _pauseSprite;
+                    if (_pauseSprite != null) playPauseImg.sprite = _pauseSprite;
+                    if (playPauseTxt != null) playPauseTxt.text = "||";
                 }
                 else
                 {
-                    playPauseImg.sprite = _playSprite;
+                    if (_playSprite != null) playPauseImg.sprite = _playSprite;
+                    if (playPauseTxt != null) playPauseTxt.text = ">";
                 }
             }
 
@@ -198,11 +256,19 @@ public class SpotifyPlayerController : SpotifyPlayerListener
 
                     // Make request to see if track is part of user's library
                     var client = SpotifyService.Instance.GetSpotifyClient();
-                    LibraryCheckTracksRequest request = new LibraryCheckTracksRequest(new List<string>() { track.Id });
-                    var result = await client.Library.CheckTracks(request);
-                    if (result.Count > 0)
+                    try 
                     {
-                        SetLibraryBtnIsLiked(result[0]);
+                        LibraryCheckTracksRequest request = new LibraryCheckTracksRequest(new List<string>() { track.Id });
+                        var result = await client.Library.CheckTracks(request);
+                        if (result.Count > 0)
+                        {
+                            SetLibraryBtnIsLiked(result[0]);
+                        }
+                    } 
+                    catch (System.Exception e) 
+                    {
+                        Debug.LogWarning($"Could not check if track is in library (403 Forbidden expected for unverified apps): {e.Message}");
+                        SetLibraryBtnIsLiked(false);
                     }
                 }
             }
@@ -246,131 +312,177 @@ public class SpotifyPlayerController : SpotifyPlayerListener
         }
     }
     
-    private void OnPlayPauseClicked()
+    private async void OnPlayPauseClicked()
     {
-        // Get current context & client, check if null
-        CurrentlyPlayingContext context = GetCurrentContext();
-        SpotifyClient client = SpotifyService.Instance.GetSpotifyClient();
-        if (context != null && client != null)
+        Debug.Log("[SpotifyPlayerController] OnPlayPauseClicked çağrıldı!");
+        SpotifyClient client = SpotifyService.Instance?.GetSpotifyClient();
+        if (client == null)
         {
-            // Get child image, update UI and set Spotify client to do action
-            Image playPauseImg = _playPauseButton.transform.GetChild(0).GetComponent<Image>();
-            if (context.IsPlaying)
+            Debug.LogError("[SpotifyPlayerController] Play/Pause: SpotifyClient null! Spotify bağlı değil.");
+            return;
+        }
+
+        CurrentlyPlayingContext context = GetCurrentContext();
+        Image playPauseImg = _playPauseButton.transform.GetChild(0).GetComponent<Image>();
+        try
+        {
+            // Context null ise (henüz fetch edilmedi) çalmaya başlamayı dene
+            bool isPlaying = context != null && context.IsPlaying;
+            if (isPlaying)
             {
-                client.Player.PausePlayback();
-                playPauseImg.sprite = _playSprite;
+                Debug.Log("[SpotifyPlayerController] Pause gönderiliyor...");
+                await client.Player.PausePlayback();
+                if (playPauseImg != null) playPauseImg.sprite = _playSprite;
             }
             else
             {
-                client.Player.ResumePlayback();
-                playPauseImg.sprite = _pauseSprite;
+                Debug.Log("[SpotifyPlayerController] Resume gönderiliyor...");
+                await client.Player.ResumePlayback();
+                if (playPauseImg != null) playPauseImg.sprite = _pauseSprite;
             }
         }
-    }
-
-    private void OnPreviousClicked()
-    {
-        SpotifyClient client = SpotifyService.Instance.GetSpotifyClient();
-        if(client != null)
+        catch (System.Exception e)
         {
-            client.Player.SkipPrevious();
+            if (e.Message.Contains("Unexpected character encountered while parsing value"))
+                Debug.Log($"[SpotifyPlayerController] Play/Pause API parsing error ignored: {e.Message}");
+            else
+                Debug.LogError($"[SpotifyPlayerController] Play/Pause başarısız (Premium gerekli veya aktif cihaz yok): {e.Message}");
         }
     }
 
-    private void OnNextClicked()
+    private async void OnPreviousClicked()
+    {
+        Debug.Log("[SpotifyPlayerController] OnPreviousClicked çağrıldı!");
+        SpotifyClient client = SpotifyService.Instance?.GetSpotifyClient();
+        if (client != null)
+        {
+            try { await client.Player.SkipPrevious(); }
+            catch (System.Exception e) 
+            { 
+                if (e.Message.Contains("Unexpected character encountered"))
+                    Debug.Log($"[SpotifyPlayerController] Previous API parsing error ignored: {e.Message}");
+                else
+                    Debug.LogError($"[SpotifyPlayerController] Previous başarısız: {e.Message}"); 
+            }
+        }
+        else Debug.LogError("[SpotifyPlayerController] Previous: SpotifyClient null!");
+    }
+
+    private async void OnNextClicked()
+    {
+        Debug.Log("[SpotifyPlayerController] OnNextClicked çağrıldı!");
+        SpotifyClient client = SpotifyService.Instance?.GetSpotifyClient();
+        if (client != null)
+        {
+            try { await client.Player.SkipNext(); }
+            catch (System.Exception e) 
+            { 
+                if (e.Message.Contains("Unexpected character encountered"))
+                    Debug.Log($"[SpotifyPlayerController] Next API parsing error ignored: {e.Message}");
+                else
+                    Debug.LogError($"[SpotifyPlayerController] Next başarısız: {e.Message}"); 
+            }
+        }
+        else Debug.LogError("[SpotifyPlayerController] Next: SpotifyClient null!");
+    }
+
+    private async void OnToggleShuffle()
     {
         SpotifyClient client = SpotifyService.Instance.GetSpotifyClient();
         if (client != null)
         {
-            client.Player.SkipNext();
+            try 
+            {
+                // get current shuffle state
+                bool currentShuffleState = GetCurrentContext().ShuffleState;
+                // Create request, invert state
+                PlayerShuffleRequest request = new PlayerShuffleRequest(!currentShuffleState);
+
+                await client.Player.SetShuffle(request);
+            }
+            catch (System.Exception e) { Debug.LogError($"Toggle Shuffle failed: {e.Message}"); }
         }
     }
 
-    private void OnToggleShuffle()
-    {
-        SpotifyClient client = SpotifyService.Instance.GetSpotifyClient();
-        if (client != null)
-        {
-            // get current shuffle state
-            bool currentShuffleState = GetCurrentContext().ShuffleState;
-            // Create request, invert state
-            PlayerShuffleRequest request = new PlayerShuffleRequest(!currentShuffleState);
-
-            client.Player.SetShuffle(request);
-        }
-    }
-
-    private void OnToggleRepeat()
+    private async void OnToggleRepeat()
     {
         SpotifyClient client = SpotifyService.Instance.GetSpotifyClient();
         CurrentlyPlayingContext context = this.GetCurrentContext();
         if(client != null && context != null)
         {
-            // Get current shuffle state
-            string currentShuffleState = context.RepeatState;
-
-            // Determine next shuffle state
-            PlayerSetRepeatRequest.State newState = PlayerSetRepeatRequest.State.Off;
-            switch (currentShuffleState)
+            try 
             {
-                case "off":
-                    newState = PlayerSetRepeatRequest.State.Track;
-                    break;
-                case "track":
-                    newState = PlayerSetRepeatRequest.State.Context;
-                    break;
-                case "context":
-                    newState = PlayerSetRepeatRequest.State.Off;
-                    break;
-                default:
-                    Debug.LogError($"Unknown Shuffle State '{currentShuffleState}'");
-                    break;
-            }
+                // Get current shuffle state
+                string currentShuffleState = context.RepeatState;
 
-            // Build request and send
-            PlayerSetRepeatRequest request = new PlayerSetRepeatRequest(newState);
-            client.Player.SetRepeat(request);
+                // Determine next shuffle state
+                PlayerSetRepeatRequest.State newState = PlayerSetRepeatRequest.State.Off;
+                switch (currentShuffleState)
+                {
+                    case "off":
+                        newState = PlayerSetRepeatRequest.State.Track;
+                        break;
+                    case "track":
+                        newState = PlayerSetRepeatRequest.State.Context;
+                        break;
+                    case "context":
+                        newState = PlayerSetRepeatRequest.State.Off;
+                        break;
+                    default:
+                        Debug.LogError($"Unknown Shuffle State '{currentShuffleState}'");
+                        break;
+                }
+
+                // Build request and send
+                PlayerSetRepeatRequest request = new PlayerSetRepeatRequest(newState);
+                await client.Player.SetRepeat(request);
+            }
+            catch (System.Exception e) { Debug.LogError($"Toggle Repeat failed: {e.Message}"); }
         }
     }
 
-    private void OnToggleMute()
+    private async void OnToggleMute()
     {
         SpotifyClient client = SpotifyService.Instance.GetSpotifyClient();
         var context = GetCurrentContext();
         if (context != null && client != null)
         {
-            int? volume = context.Device.VolumePercent;
-            int targetVolume;
-            Image muteImg = _muteButton.transform.GetChild(0).GetComponent<Image>();
-            if (volume.HasValue && volume > 0)
+            try
             {
-                // Set target volume to 0, sprite to muted
-                targetVolume = 0;
-                muteImg.sprite = _muteSprite;
-                // Save current volume for unmute press
-                _volumeLastValue = volume.Value;
-            }
-            else
-            {
-                // Set target to last volume value before mute
-                if (_volumeLastValue > 0)
+                int? volume = context.Device.VolumePercent;
+                int targetVolume;
+                Image muteImg = _muteButton.transform.GetChild(0).GetComponent<Image>();
+                if (volume.HasValue && volume > 0)
                 {
-                    targetVolume = _volumeLastValue;
-                    _volumeLastValue = -1;
+                    // Set target volume to 0, sprite to muted
+                    targetVolume = 0;
+                    muteImg.sprite = _muteSprite;
+                    // Save current volume for unmute press
+                    _volumeLastValue = volume.Value;
                 }
                 else
                 {
-                    // If no value, use default value
-                    targetVolume = 25;
+                    // Set target to last volume value before mute
+                    if (_volumeLastValue > 0)
+                    {
+                        targetVolume = _volumeLastValue;
+                        _volumeLastValue = -1;
+                    }
+                    else
+                    {
+                        // If no value, use default value
+                        targetVolume = 25;
+                    }
+
+                    // Update sprite
+                    muteImg.sprite = _unmuteSprite;
                 }
 
-                // Update sprite
-                muteImg.sprite = _unmuteSprite;
+                // Send request
+                PlayerVolumeRequest request = new PlayerVolumeRequest(targetVolume);
+                await client.Player.SetVolume(request);
             }
-
-            // Send request
-            PlayerVolumeRequest request = new PlayerVolumeRequest(targetVolume);
-            client.Player.SetVolume(request);
+            catch (System.Exception e) { Debug.LogError($"Toggle Mute failed: {e.Message}"); }
         }
     }
 
@@ -383,51 +495,56 @@ public class SpotifyPlayerController : SpotifyPlayerListener
         if (client != null && context != null)
         {
             List<string> ids = new List<string>();
-            // Cast Item to correct type, add it's URI add make request
-            if (context.Item.Type == ItemType.Track)
+            try
             {
-                FullTrack track = context.Item as FullTrack;
-                ids.Add(track.Id);
-
-                if (_currentItemIsInLibrary)
+                // Cast Item to correct type, add it's URI add make request
+                if (context.Item.Type == ItemType.Track)
                 {
-                    // Is in library, remove
-                    LibraryRemoveTracksRequest removeRequest = new LibraryRemoveTracksRequest(ids);
-                    await client.Library.RemoveTracks(removeRequest);
+                    FullTrack track = context.Item as FullTrack;
+                    ids.Add(track.Id);
 
-                    SetLibraryBtnIsLiked(false);
+                    if (_currentItemIsInLibrary)
+                    {
+                        // Is in library, remove
+                        LibraryRemoveTracksRequest removeRequest = new LibraryRemoveTracksRequest(ids);
+                        await client.Library.RemoveTracks(removeRequest);
+
+                        SetLibraryBtnIsLiked(false);
+                    }
+                    else
+                    {
+                        // Not in library, add to user's library
+                        LibrarySaveTracksRequest removeRequest = new LibrarySaveTracksRequest(ids);
+                        await client.Library.SaveTracks(removeRequest);
+
+                        SetLibraryBtnIsLiked(true);
+                    }
                 }
-                else
+                else if (context.Item.Type == ItemType.Episode)
                 {
-                    // Not in library, add to user's library
-                    LibrarySaveTracksRequest removeRequest = new LibrarySaveTracksRequest(ids);
-                    await client.Library.SaveTracks(removeRequest);
+                    FullEpisode episode = context.Item as FullEpisode;
+                    ids.Add(episode.Id);
 
-                    SetLibraryBtnIsLiked(true);
+                    if (_currentItemIsInLibrary)
+                    {
+                        LibraryRemoveShowsRequest request = new LibraryRemoveShowsRequest(ids);
+                        await client.Library.RemoveShows(request);
+
+                        SetLibraryBtnIsLiked(false);
+                    }
+                    else
+                    {
+                        LibrarySaveShowsRequest request = new LibrarySaveShowsRequest(ids);
+                        await client.Library.SaveShows(request);
+
+                        SetLibraryBtnIsLiked(true);
+                    }
                 }
             }
-            else if (context.Item.Type == ItemType.Episode)
+            catch (System.Exception e)
             {
-                FullEpisode episode = context.Item as FullEpisode;
-                ids.Add(episode.Id);
-
-                if (_currentItemIsInLibrary)
-                {
-                    LibraryRemoveShowsRequest request = new LibraryRemoveShowsRequest(ids);
-                    await client.Library.RemoveShows(request);
-
-                    SetLibraryBtnIsLiked(false);
-                }
-                else
-                {
-                    LibrarySaveShowsRequest request = new LibrarySaveShowsRequest(ids);
-                    await client.Library.SaveShows(request);
-
-                    SetLibraryBtnIsLiked(true);
-                }
+                Debug.LogWarning($"Could not update library status (403 Forbidden expected for unverified apps): {e.Message}");
             }
-
-           
         }
     }
 
@@ -459,6 +576,32 @@ public class SpotifyPlayerController : SpotifyPlayerListener
             // Reset variables
             _progressStartDrag = false;
             _progressDragNewValue = -1.0f;
+        }
+    }
+
+    private void OnVolumeSliderMouseDown(BaseEventData arg0)
+    {
+        _volumeStartDrag = true;
+    }
+
+    private void OnVolumeSliderValueChanged(float newValue)
+    {
+        _volumeDragNewValue = newValue;
+    }
+
+    private void OnVolumeSliderMouseUp(BaseEventData arg0)
+    {
+        if (_volumeStartDrag && _volumeDragNewValue >= 0)
+        {
+            SpotifyClient client = SpotifyService.Instance.GetSpotifyClient();
+
+            PlayerVolumeRequest request = new PlayerVolumeRequest((int)_volumeDragNewValue);
+            client.Player.SetVolume(request);
+
+            _volumeSlider.value = _volumeDragNewValue;
+            _volumeStartDrag = false;
+            _volumeDragNewValue = -1.0f;
+            Debug.Log($"[SpotifyPlayerController] Volume set to {_volumeSlider.value}");
         }
     }
 

@@ -136,7 +136,7 @@ public class PlaylistViewController : ViewControllerBase
             }
             if (_headerDetails != null)
             {
-                _headerDetails.text = $"{ _playlist.Owner.DisplayName} • {_playlist.Tracks.Total.Value} songs";
+                _headerDetails.text = $"{ _playlist.Owner.DisplayName} â€¢ {_playlist.Tracks.Total.Value} songs";
             }
             if (_headerType != null)
             {
@@ -169,6 +169,17 @@ public class PlaylistViewController : ViewControllerBase
                 SinglePlaylistSelectableTrack singleTrack = singleTrackGo.GetComponent<SinglePlaylistSelectableTrack>();
                 // Set track and it's context uri
                 singleTrack.SetTrack(track.Track as FullTrack, _playlist.Uri);
+
+                // --- Lazerle Tiklanabilmesi Icin Playlist Sarkilarina VR Destegi Ekle ---
+                UnityEngine.UI.Button[] buttons = singleTrackGo.GetComponentsInChildren<UnityEngine.UI.Button>(true);
+                foreach(var b in buttons)
+                {
+                    if (b.GetComponent<VRButtonLinker>() == null)
+                    {
+                        b.gameObject.AddComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable>();
+                        b.gameObject.AddComponent<VRButtonLinker>();
+                    }
+                }
             }
 
 

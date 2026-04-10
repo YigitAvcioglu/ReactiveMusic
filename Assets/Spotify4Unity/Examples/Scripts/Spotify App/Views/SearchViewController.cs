@@ -106,6 +106,17 @@ public class SearchViewController : ViewControllerBase
         {
             GameObject instGO = Instantiate(prefab, parent);
             afterPrefabInst?.Invoke(instGO, obj);
+
+            // --- Lazerle Tıklanabilmesi İçin Dinamik Sonuçlara VR Desteği Ekle ---
+            UnityEngine.UI.Button[] buttons = instGO.GetComponentsInChildren<UnityEngine.UI.Button>(true);
+            foreach(var b in buttons)
+            {
+                if (b.GetComponent<VRButtonLinker>() == null)
+                {
+                    b.gameObject.AddComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable>();
+                    b.gameObject.AddComponent<VRButtonLinker>();
+                }
+            }
         }
 
 

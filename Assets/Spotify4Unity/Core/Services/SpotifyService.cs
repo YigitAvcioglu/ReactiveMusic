@@ -1,4 +1,4 @@
-﻿using SpotifyAPI.Web;
+using SpotifyAPI.Web;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -277,8 +277,8 @@ public class SpotifyService : SceneSingleton<SpotifyService>
         {
             try
             {
-                var newReleases = await _client.Browse.GetNewReleases();
-                if (newReleases != null)
+                var profile = await _client.UserProfile.Current();
+                if (profile != null)
                 {
                     //Debug.Log("Confirmation request success!");
                     return;

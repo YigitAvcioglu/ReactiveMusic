@@ -3,7 +3,23 @@
   "WorkspaceRootPath": "C:\\Users\\avcio\\Documents\\GitHub\\ReactiveMusic\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{7C7A7E78-7A11-C99A-654E-3175F264AED6}|Assembly-CSharp.csproj|c:\\users\\avcio\\documents\\github\\reactivemusic\\assets\\scripts\\vrbuttonlinker.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{7C7A7E78-7A11-C99A-654E-3175F264AED6}|Assembly-CSharp.csproj|c:\\users\\avcio\\documents\\github\\reactivemusic\\assets\\scripts\\spotifyfullui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7C7A7E78-7A11-C99A-654E-3175F264AED6}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\spotifyfullui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7C7A7E78-7A11-C99A-654E-3175F264AED6}|Assembly-CSharp.csproj|c:\\users\\avcio\\documents\\github\\reactivemusic\\assets\\spotify4unity\\examples\\scripts\\spotify app\\prefabs\\singleplaylistselectabletrack.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7C7A7E78-7A11-C99A-654E-3175F264AED6}|Assembly-CSharp.csproj|solutionrelative:assets\\spotify4unity\\examples\\scripts\\spotify app\\prefabs\\singleplaylistselectabletrack.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7C7A7E78-7A11-C99A-654E-3175F264AED6}|Assembly-CSharp.csproj|C:\\Users\\avcio\\Documents\\GitHub\\ReactiveMusic\\assets\\scripts\\vrkeyboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7C7A7E78-7A11-C99A-654E-3175F264AED6}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\vrkeyboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7C7A7E78-7A11-C99A-654E-3175F264AED6}|Assembly-CSharp.csproj|C:\\Users\\avcio\\Documents\\GitHub\\ReactiveMusic\\assets\\spotify4unity\\examples\\scripts\\spotify app\\spotifyplayercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7C7A7E78-7A11-C99A-654E-3175F264AED6}|Assembly-CSharp.csproj|solutionrelative:assets\\spotify4unity\\examples\\scripts\\spotify app\\spotifyplayercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7C7A7E78-7A11-C99A-654E-3175F264AED6}|Assembly-CSharp.csproj|C:\\Users\\avcio\\Documents\\GitHub\\ReactiveMusic\\assets\\scripts\\vrbuttonlinker.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{7C7A7E78-7A11-C99A-654E-3175F264AED6}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\vrbuttonlinker.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -27,19 +43,68 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "VRButtonLinker.cs",
-              "DocumentMoniker": "C:\\Users\\avcio\\Documents\\GitHub\\ReactiveMusic\\Assets\\Scripts\\VRButtonLinker.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\VRButtonLinker.cs",
-              "ToolTip": "C:\\Users\\avcio\\Documents\\GitHub\\ReactiveMusic\\Assets\\Scripts\\VRButtonLinker.cs",
-              "RelativeToolTip": "Assets\\Scripts\\VRButtonLinker.cs",
-              "ViewState": "AgIAABkAAAAAAAAAAAAUwDgAAAA9AAAAAAAAAA==",
+              "Title": "SpotifyFullUI.cs",
+              "DocumentMoniker": "C:\\Users\\avcio\\Documents\\GitHub\\ReactiveMusic\\Assets\\Scripts\\SpotifyFullUI.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\SpotifyFullUI.cs",
+              "ToolTip": "C:\\Users\\avcio\\Documents\\GitHub\\ReactiveMusic\\Assets\\Scripts\\SpotifyFullUI.cs",
+              "RelativeToolTip": "Assets\\Scripts\\SpotifyFullUI.cs",
+              "ViewState": "AgIAADACAAAAAAAAAAAmwD8CAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-06T18:44:42.695Z",
+              "WhenOpened": "2026-04-10T03:11:57.272Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "SinglePlaylistSelectableTrack.cs",
+              "DocumentMoniker": "C:\\Users\\avcio\\Documents\\GitHub\\ReactiveMusic\\Assets\\Spotify4Unity\\Examples\\Scripts\\Spotify App\\Prefabs\\SinglePlaylistSelectableTrack.cs",
+              "RelativeDocumentMoniker": "Assets\\Spotify4Unity\\Examples\\Scripts\\Spotify App\\Prefabs\\SinglePlaylistSelectableTrack.cs",
+              "ToolTip": "C:\\Users\\avcio\\Documents\\GitHub\\ReactiveMusic\\Assets\\Spotify4Unity\\Examples\\Scripts\\Spotify App\\Prefabs\\SinglePlaylistSelectableTrack.cs",
+              "RelativeToolTip": "Assets\\Spotify4Unity\\Examples\\Scripts\\Spotify App\\Prefabs\\SinglePlaylistSelectableTrack.cs",
+              "ViewState": "AgIAAE8AAAAAAAAAAAAmwF4AAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-10T01:29:59.021Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "VRKeyboard.cs",
+              "DocumentMoniker": "C:\\Users\\avcio\\Documents\\GitHub\\ReactiveMusic\\Assets\\Scripts\\VRKeyboard.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\VRKeyboard.cs",
+              "ToolTip": "C:\\Users\\avcio\\Documents\\GitHub\\ReactiveMusic\\Assets\\Scripts\\VRKeyboard.cs",
+              "RelativeToolTip": "Assets\\Scripts\\VRKeyboard.cs",
+              "ViewState": "AgIAAKoAAAAAAAAAAABBwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-10T01:09:33.118Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "SpotifyPlayerController.cs",
+              "DocumentMoniker": "C:\\Users\\avcio\\Documents\\GitHub\\ReactiveMusic\\Assets\\Spotify4Unity\\Examples\\Scripts\\Spotify App\\SpotifyPlayerController.cs",
+              "RelativeDocumentMoniker": "Assets\\Spotify4Unity\\Examples\\Scripts\\Spotify App\\SpotifyPlayerController.cs",
+              "ToolTip": "C:\\Users\\avcio\\Documents\\GitHub\\ReactiveMusic\\Assets\\Spotify4Unity\\Examples\\Scripts\\Spotify App\\SpotifyPlayerController.cs",
+              "RelativeToolTip": "Assets\\Spotify4Unity\\Examples\\Scripts\\Spotify App\\SpotifyPlayerController.cs",
+              "ViewState": "AgIAACMBAAAAAAAAAAAmwDMBAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-07T23:54:07.442Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "VRButtonLinker.cs",
+              "DocumentMoniker": "C:\\Users\\avcio\\Documents\\GitHub\\ReactiveMusic\\Assets\\Scripts\\VRButtonLinker.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\VRButtonLinker.cs",
+              "ToolTip": "C:\\Users\\avcio\\Documents\\GitHub\\ReactiveMusic\\Assets\\Scripts\\VRButtonLinker.cs",
+              "RelativeToolTip": "Assets\\Scripts\\VRButtonLinker.cs",
+              "ViewState": "AgIAABkAAAAAAAAAAAAUwDgAAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-06T18:44:42.695Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
               "Title": "XRBaseInteractor.deprecated.cs",
               "DocumentMoniker": "C:\\Users\\avcio\\Documents\\GitHub\\ReactiveMusic\\Library\\PackageCache\\com.unity.xr.interaction.toolkit@7faefd988174\\Runtime\\Interaction\\Interactors\\XRBaseInteractor.deprecated.cs",
               "RelativeDocumentMoniker": "Library\\PackageCache\\com.unity.xr.interaction.toolkit@7faefd988174\\Runtime\\Interaction\\Interactors\\XRBaseInteractor.deprecated.cs",
@@ -47,12 +112,11 @@
               "RelativeToolTip": "Library\\PackageCache\\com.unity.xr.interaction.toolkit@7faefd988174\\Runtime\\Interaction\\Interactors\\XRBaseInteractor.deprecated.cs",
               "ViewState": "AgIAAHQBAAAAAAAAAAAmwIQBAABJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-06T18:32:17.201Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-06T18:32:17.201Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 6,
               "Title": "XRBaseInteractable.deprecated.cs",
               "DocumentMoniker": "C:\\Users\\avcio\\Documents\\GitHub\\ReactiveMusic\\Library\\PackageCache\\com.unity.xr.interaction.toolkit@7faefd988174\\Runtime\\Interaction\\Interactables\\XRBaseInteractable.deprecated.cs",
               "RelativeDocumentMoniker": "Library\\PackageCache\\com.unity.xr.interaction.toolkit@7faefd988174\\Runtime\\Interaction\\Interactables\\XRBaseInteractable.deprecated.cs",
