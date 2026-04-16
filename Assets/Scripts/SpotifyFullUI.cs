@@ -330,7 +330,7 @@ public class SpotifyFullUI : MonoBehaviour
         volumeSlider.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(150, 20);
 
         // --- Controller Binding ---
-        _playerController = FindObjectOfType<SpotifyPlayerController>();
+        _playerController = GameObject.FindFirstObjectByType<SpotifyPlayerController>();
         if (_playerController == null) _playerController = bar.gameObject.AddComponent<SpotifyPlayerController>();
 
         SetField(_playerController, "_trackIcon", albumArt.GetComponent<Image>());

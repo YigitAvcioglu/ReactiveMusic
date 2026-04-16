@@ -1,0 +1,12 @@
+{
+    "name": "Lasp.Editor",
+    "references": [
+        "LaspRuntime"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}

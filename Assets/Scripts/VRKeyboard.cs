@@ -19,7 +19,6 @@ public class VRKeyboard : MonoBehaviour
     private InputField _activeInputField;
     private GameObject _keyboardPanel;
     private bool _isShift = false;
-    private bool _isVisible = false;
 
     // Standard QWERTY layout
     private static readonly string[] ROW1 = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "0" };
@@ -54,7 +53,6 @@ public class VRKeyboard : MonoBehaviour
         if (_keyboardPanel != null)
         {
             _keyboardPanel.SetActive(true);
-            _isVisible = true;
         }
     }
 
@@ -63,7 +61,6 @@ public class VRKeyboard : MonoBehaviour
         if (_keyboardPanel != null)
         {
             _keyboardPanel.SetActive(false);
-            _isVisible = false;
             _activeInputField = null;
         }
     }

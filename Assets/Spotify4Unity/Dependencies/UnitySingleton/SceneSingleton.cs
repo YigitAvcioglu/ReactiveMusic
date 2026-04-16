@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,7 +12,7 @@ public class SceneSingleton<T> : MonoBehaviour where T : SceneSingleton<T>
         {
             if (m_Instance == null)
             {
-                m_Instance = FindObjectOfType<T>();
+                m_Instance = GameObject.FindFirstObjectByType<T>();
                 // fallback, might not be necessary.
                 if (m_Instance == null)
                     m_Instance = new GameObject(typeof(T).Name).AddComponent<T>();

@@ -232,7 +232,7 @@ public class SpotifyPlayerController : SpotifyPlayerListener
         }
     }
 
-    private async void PlayingItemChanged(IPlayableItem newPlayingItem)
+    protected override async void PlayingItemChanged(IPlayableItem newPlayingItem)
     {
         if (newPlayingItem == null)
         {
@@ -254,20 +254,31 @@ public class SpotifyPlayerController : SpotifyPlayerListener
                     SpotifyAPI.Web.Image image = S4UUtility.GetLowestResolutionImage(track.Album.Images);
                     UpdatePlayerInfo(track.Name, allArtists, image?.Url);
 
-                    // Make request to see if track is part of user's library
+                    // Make request to see if track is part of user's library if scope is authorized
                     var client = SpotifyService.Instance.GetSpotifyClient();
-                    try 
+                    if (SpotifyService.Instance.AreScopesAuthorized(Scopes.UserLibraryRead))
                     {
-                        LibraryCheckTracksRequest request = new LibraryCheckTracksRequest(new List<string>() { track.Id });
-                        var result = await client.Library.CheckTracks(request);
-                        if (result.Count > 0)
+                        try 
                         {
-                            SetLibraryBtnIsLiked(result[0]);
+                            LibraryCheckTracksRequest request = new LibraryCheckTracksRequest(new List<string>() { track.Id });
+                            var result = await client.Library.CheckTracks(request);
+                            if (result.Count > 0)
+                            {
+                                SetLibraryBtnIsLiked(result[0]);
+                            }
+                        } 
+                        catch (System.Exception e) 
+                        {
+                            // If it still fails, suppress the 403 or Forbidden warning to keep console clean
+                            if (!e.Message.Contains("403") && !e.Message.Contains("Forbidden"))
+                            {
+                                Debug.LogWarning($"Could not check if track is in library: {e.Message}");
+                            }
+                            SetLibraryBtnIsLiked(false);
                         }
-                    } 
-                    catch (System.Exception e) 
+                    }
+                    else
                     {
-                        Debug.LogWarning($"Could not check if track is in library (403 Forbidden expected for unverified apps): {e.Message}");
                         SetLibraryBtnIsLiked(false);
                     }
                 }
@@ -304,13 +315,41 @@ public class SpotifyPlayerController : SpotifyPlayerListener
             }
             else
             {
-                StartCoroutine(S4UUtility.LoadImageFromUrl(artUrl, (loadedSprite) =>
+                // StartCoroutine yalnızca aktif GameObject'te çalışır.
+                // PlayerBar veya SpotifyCanvas kapalıyken şarkı değişirse bu koruma devreye girer.
+                if (gameObject.activeInHierarchy)
                 {
-                    _trackIcon.sprite = loadedSprite;
-                }));
+                    StartCoroutine(S4UUtility.LoadImageFromUrl(artUrl, (loadedSprite) =>
+                    {
+                        _trackIcon.sprite = loadedSprite;
+                    }));
+                }
+                else
+                {
+                    // Canvas açıldığında doğru artwork'ü göstermek için URL'yi sakla
+                    _pendingArtUrl = artUrl;
+                }
             }
         }
     }
+
+    // Canvas kapalıyken gelen artwork URL'sini tutmak için
+    private string _pendingArtUrl = null;
+
+    private void OnEnable()
+    {
+        // Canvas tekrar açıldığında bekleyen artwork varsa yükle
+        if (!string.IsNullOrEmpty(_pendingArtUrl) && _trackIcon != null)
+        {
+            string url = _pendingArtUrl;
+            _pendingArtUrl = null;
+            StartCoroutine(S4UUtility.LoadImageFromUrl(url, (loadedSprite) =>
+            {
+                _trackIcon.sprite = loadedSprite;
+            }));
+        }
+    }
+
     
     private async void OnPlayPauseClicked()
     {

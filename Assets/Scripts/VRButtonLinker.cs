@@ -54,7 +54,7 @@ public class VRButtonLinker : MonoBehaviour, IPointerClickHandler, IPointerEnter
             interactable.selectEntered.AddListener((args) =>
             {
                 Debug.Log($"[VRButtonLinker] XR Select: {gameObject.name}");
-                InvokeButton();
+                InvokeButton("XRSelect");
             });
             interactable.hoverEntered.AddListener((args) =>
             {
@@ -81,44 +81,37 @@ public class VRButtonLinker : MonoBehaviour, IPointerClickHandler, IPointerEnter
 
     void Update()
     {
-        if (isPointerOver)
-        {
-            bool triggerPulled = false;
+        bool triggerPulled = false;
 
-            // XRI Input System'de Trigger değerini doğrudan algılamak için
-            // Gamepad'lerin (VR Controller'lar InputSystem'de gamepad olarak da görünebilir) tetiklerine bakalım:
-            foreach (var gamepad in Gamepad.all)
+        // Triggers'ı izleyelim
+        foreach (var gamepad in Gamepad.all)
+        {
+            if (gamepad.rightTrigger.ReadValue() > 0.5f || gamepad.leftTrigger.ReadValue() > 0.5f)
             {
-                if (gamepad.rightTrigger.wasPressedThisFrame || gamepad.leftTrigger.wasPressedThisFrame)
+                triggerPulled = true;
+            }
+        }
+
+        foreach (var device in UnityEngine.InputSystem.InputSystem.devices)
+        {
+            if (device.name.Contains("Controller") || device.name.Contains("Hand"))
+            {
+                var triggerControl = device.GetChildControl<UnityEngine.InputSystem.Controls.AxisControl>("trigger");
+                if (triggerControl != null && triggerControl.ReadValue() > 0.5f)
                 {
                     triggerPulled = true;
                 }
             }
-
-            // Ya da spesifik olarak XRController cihazlarına bakalım (Yeni Input System üzerinden)
-            foreach (var device in UnityEngine.InputSystem.InputSystem.devices)
-            {
-                if (device.name.Contains("Controller") || device.name.Contains("Hand"))
-                {
-                    var triggerControl = device.GetChildControl<UnityEngine.InputSystem.Controls.AxisControl>("trigger");
-                    if (triggerControl != null && triggerControl.ReadValue() > 0.5f)
-                    {
-                         triggerPulled = true;
-                    }
-                }
-            }
-
-            if (triggerPulled && !wasTriggerPulled)
-            {
-                Debug.Log($"[VRButtonLinker] Manual VR Trigger Detection: {gameObject.name}");
-                InvokeButton();
-            }
-            wasTriggerPulled = triggerPulled;
         }
-        else
+
+        if (isPointerOver && triggerPulled && !wasTriggerPulled)
         {
-            wasTriggerPulled = false;
+            InvokeButton("UpdateManualCheck");
         }
+
+        // Pointer üzerinde olsak da olmasak da tetiğin durumunu kaydet.
+        // Aksi takdirde hover başladığı ilk frame tıklama olarak algılanır.
+        wasTriggerPulled = triggerPulled;
     }
 
     // ── IPointerClickHandler ──────────────────────────────────────
@@ -126,8 +119,7 @@ public class VRButtonLinker : MonoBehaviour, IPointerClickHandler, IPointerEnter
     // tetiklenir (VR lazer ya da mouse fark etmez).
     public void OnPointerClick(PointerEventData eventData)
     {
-        Debug.Log($"[VRButtonLinker] OnPointerClick -> {gameObject.name}");
-        InvokeButton();
+        InvokeButton("OnPointerClick");
     }
 
     public void OnPointerEnter(PointerEventData eventData) { isPointerOver = true; }
@@ -136,8 +128,10 @@ public class VRButtonLinker : MonoBehaviour, IPointerClickHandler, IPointerEnter
     // ─────────────────────────────────────────────────────────────
     private float lastInvokeTime = -1f;
 
-    void InvokeButton()
+    void InvokeButton(string source)
     {
+        Debug.Log($"[VRButtonLinker] InvokeButton called by: {source} -> {gameObject.name}");
+
         if (Time.time - lastInvokeTime < 0.5f)
         {
             Debug.Log($"[VRButtonLinker] Invoke blocked by debounce -> {gameObject.name}");
@@ -157,7 +151,7 @@ public class VRButtonLinker : MonoBehaviour, IPointerClickHandler, IPointerEnter
             
             // Eğer fiziksel klavye aktifleşmesin (sadece sanal VR klavye yazı yazsın) istiyorsak
             // EventSystem'den Select YAPMIYORUZ! Böylece gerçek donanım klavyesi buraya veri gönderemiyor.
-            VRKeyboard kb = FindObjectOfType<VRKeyboard>(true); 
+            VRKeyboard kb = GameObject.FindFirstObjectByType<VRKeyboard>(FindObjectsInactive.Include); 
             if (kb != null) 
             {
                 kb.OpenForInputField(inputField);
