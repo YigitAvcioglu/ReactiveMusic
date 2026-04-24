@@ -14,7 +14,8 @@ public class EnvironmentColorReactive : MonoBehaviour
 
     [Header("Renk Cümbüşü (Gradient)")]
     public Gradient colorGradient;
-    
+    public float colorChangeSpeed = 0.15f;
+
     private MaterialPropertyBlock _mpb;
     private float _hueOffset;
 
@@ -32,17 +33,21 @@ public class EnvironmentColorReactive : MonoBehaviour
             audioData = GameObject.FindFirstObjectByType<AudioSpectrumData>();
         }
 
-        colorGradient = new Gradient();
-        colorGradient.SetKeys(
-            new GradientColorKey[]
-            {
-                new GradientColorKey(new Color(1f, 0f, 0.5f), 0.0f),   // Pembe
-                new GradientColorKey(new Color(0.2f, 0.2f, 1f), 0.33f), // Mavi
-                new GradientColorKey(new Color(0f, 1f, 0f), 0.66f),     // Yeşil
-                new GradientColorKey(new Color(0f, 1f, 1f), 1.0f),      // Cyan
-            },
-            new GradientAlphaKey[] { new GradientAlphaKey(1f, 0f), new GradientAlphaKey(1f, 1f) }
-        );
+        bool isWhiteGradient = colorGradient != null && colorGradient.colorKeys != null && colorGradient.colorKeys.Length == 2 && colorGradient.colorKeys[0].color == Color.white && colorGradient.colorKeys[1].color == Color.white;
+        if (colorGradient == null || colorGradient.alphaKeys == null || colorGradient.alphaKeys.Length == 0 || isWhiteGradient)
+        {
+            colorGradient = new Gradient();
+            colorGradient.SetKeys(
+                new GradientColorKey[]
+                {
+                    new GradientColorKey(new Color(1f, 0f, 0.5f), 0.0f),   // Pembe
+                    new GradientColorKey(new Color(0.2f, 0.2f, 1f), 0.33f), // Mavi
+                    new GradientColorKey(new Color(0f, 1f, 0f), 0.66f),     // Yeşil
+                    new GradientColorKey(new Color(0f, 1f, 1f), 1.0f),      // Cyan
+                },
+                new GradientAlphaKey[] { new GradientAlphaKey(1f, 0f), new GradientAlphaKey(1f, 1f) }
+            );
+        }
     }
 
     void Update()
@@ -52,13 +57,14 @@ public class EnvironmentColorReactive : MonoBehaviour
         float bass = audioData.bass;
         float amplitude = audioData.amplitude;
 
-        _hueOffset += Time.deltaTime * 0.15f;
-        float colorT = Mathf.Repeat(_hueOffset + (bass * 0.8f), 1f);
+        _hueOffset += Time.deltaTime * colorChangeSpeed;
+        float colorT = Mathf.Repeat(_hueOffset + (bass * 0.15f), 1f);
         
         Color targetColor = colorGradient.Evaluate(colorT);
         
         // Müzik şiddetine göre parlaklık (Hem çizgiler hem duvarlar için)
-        float emissionStrength = Mathf.Lerp(0.5f, 4.0f, amplitude + (bass * 0.5f));
+        // Işıkların tamamen sönmesini engellemek için alt limiti (minimum emission) artırdık (0.5f -> 1.5f)
+        float emissionStrength = Mathf.Lerp(1.5f, 4.0f, amplitude + (bass * 0.5f));
         Color finalGlowColor = targetColor * emissionStrength;
 
         foreach (var r in environmentRenderers)

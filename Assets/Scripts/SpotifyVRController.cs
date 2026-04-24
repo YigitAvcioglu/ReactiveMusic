@@ -21,6 +21,7 @@ public class SpotifyVRController : SpotifyPlayerListener
     private float _durationMs = 0f;
 
     public event Action<string, string, string> OnTrackInfoChanged;
+    public event Action<string> OnTrackIdChanged;
     public event Action<bool> OnConnectionStateChanged;
     public event Action<string> OnAlbumArtUrlChanged;
 
@@ -76,6 +77,7 @@ public class SpotifyVRController : SpotifyPlayerListener
             }
             Log("Now Playing: " + _trackName + " - " + _artistName);
             OnTrackInfoChanged?.Invoke(_trackName, _artistName, _albumName);
+            OnTrackIdChanged?.Invoke(t.Id);
         }
         else if (item is FullEpisode ep)
         {
@@ -109,6 +111,7 @@ public class SpotifyVRController : SpotifyPlayerListener
         _trackName = ""; _artistName = ""; _albumName = "";
         _durationMs = 0f; _albumArtUrl = "";
         OnTrackInfoChanged?.Invoke("", "", "");
+        OnTrackIdChanged?.Invoke("");
     }
 
     public SpotifyClient GetClient() => _client;

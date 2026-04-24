@@ -423,7 +423,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Club Scene
+  m_text: Grid Scene
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2596,6 +2596,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!134 &1261790695
+PhysicsMaterial:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  serializedVersion: 2
+  m_DynamicFriction: 0.6
+  m_StaticFriction: 0.6
+  m_Bounciness: 0
+  m_FrictionCombine: 0
+  m_BounceCombine: 0
 --- !u!1 &1311536441
 GameObject:
   m_ObjectHideFlags: 0
@@ -2612,7 +2625,7 @@ GameObject:
   - component: {fileID: 1311536444}
   - component: {fileID: 1311536443}
   m_Layer: 8
-  m_Name: ClubButton
+  m_Name: GridButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2652,7 +2665,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::VRButtonLinker
   colliderScaleMultiplier: 1
   darkenOnHover: 1
-  targetScene: Club
+  targetScene: Grid
 --- !u!114 &1311536444
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2732,7 +2745,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1311536441}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 1261790695}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

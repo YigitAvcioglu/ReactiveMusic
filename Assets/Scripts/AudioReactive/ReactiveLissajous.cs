@@ -19,8 +19,13 @@ public class ReactiveLissajous : MonoBehaviour
     public Color baseColor = Color.cyan;
     public Color highColor = Color.magenta;
     
+    [Header("Reaction Smoothing")]
+    public float smoothSpeed = 1000000f; // Ne kadar düşükse o kadar yumuşak (damped) geçer
+    
     private LineRenderer line;
     private float time;
+    private float _smoothedAmplitude;
+    private float _smoothedBass;
 
     void Start()
     {
@@ -42,9 +47,13 @@ public class ReactiveLissajous : MonoBehaviour
         // Progress time faster based on mid-range frequencies
         time += Time.deltaTime * (1f + data.mid * 2f); 
         
-        // Expand shape based on overall amplitude
-        float currentTargetX = baseRadiusX + (data.amplitude * audioRadiusMultiplier);
-        float currentTargetY = baseRadiusY + (data.amplitude * audioRadiusMultiplier);
+        // Damping (Yumuşatma) hesabı yapalım
+        _smoothedAmplitude = Mathf.Lerp(_smoothedAmplitude, data.amplitude, Time.deltaTime * smoothSpeed);
+        _smoothedBass = Mathf.Lerp(_smoothedBass, data.bass, Time.deltaTime * smoothSpeed);
+
+        // Expand shape based on smoothed amplitude
+        float currentTargetX = baseRadiusX + (_smoothedAmplitude * audioRadiusMultiplier);
+        float currentTargetY = baseRadiusY + (_smoothedAmplitude * audioRadiusMultiplier);
 
         var positions = new Vector3[resolution + 1];
         
@@ -55,7 +64,7 @@ public class ReactiveLissajous : MonoBehaviour
             // Lissajous curve formula
             float x = Mathf.Sin(t * speedX + time) * currentTargetX;
             float y = Mathf.Cos(t * speedY) * currentTargetY;
-            float z = Mathf.Sin(t * (speedX + speedY)) * (data.bass * 2f); // Z depth driven by bass
+            float z = Mathf.Sin(t * (speedX + speedY)) * (_smoothedBass * 2f); // Z depth driven by smoothed bass
             
             positions[i] = new Vector3(x, y, z);
         }
@@ -63,12 +72,12 @@ public class ReactiveLissajous : MonoBehaviour
         line.SetPositions(positions);
         
         // React line thickness to bass
-        float dynamicThickness = Mathf.Lerp(lineThickness, lineThickness * 4f, data.bass);
+        float dynamicThickness = Mathf.Lerp(lineThickness, lineThickness * 4f, _smoothedBass);
         line.startWidth = dynamicThickness;
         line.endWidth = dynamicThickness;
 
         // React color
         Color targetColor = Color.Lerp(baseColor, highColor, data.high);
-        line.material.SetColor("_EmissionColor", targetColor * (1f + data.amplitude * 2f));
+        line.material.SetColor("_EmissionColor", targetColor * (1f + _smoothedAmplitude * 1.5f));
     }
 }

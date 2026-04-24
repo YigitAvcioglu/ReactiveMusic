@@ -10,6 +10,6 @@ public class MenuSceneManager : MonoBehaviour
 
     public void LoadClubScene()
     {
-        SceneManager.LoadScene("Club");
+        SceneManager.LoadScene("Grid");
     }
 }

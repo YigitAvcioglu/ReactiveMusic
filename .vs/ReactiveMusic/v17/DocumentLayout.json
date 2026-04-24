@@ -3,7 +3,35 @@
   "WorkspaceRootPath": "C:\\Users\\avcio\\Documents\\GitHub\\ReactiveMusic\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{2DDD5CE5-9500-B3E2-10CF-1BD2CC4296F4}|Assembly-CSharp-Editor.csproj|c:\\users\\avcio\\documents\\github\\reactivemusic\\assets\\editor\\repairspotifyconnections.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{7C7A7E78-7A11-C99A-654E-3175F264AED6}|Assembly-CSharp.csproj|c:\\users\\avcio\\documents\\github\\reactivemusic\\assets\\scripts\\menuaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7C7A7E78-7A11-C99A-654E-3175F264AED6}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\menuaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7C7A7E78-7A11-C99A-654E-3175F264AED6}|Assembly-CSharp.csproj|c:\\users\\avcio\\documents\\github\\reactivemusic\\assets\\scripts\\menubuttonhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7C7A7E78-7A11-C99A-654E-3175F264AED6}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\menubuttonhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7C7A7E78-7A11-C99A-654E-3175F264AED6}|Assembly-CSharp.csproj|c:\\users\\avcio\\documents\\github\\reactivemusic\\assets\\scripts\\menubuttonlinker.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7C7A7E78-7A11-C99A-654E-3175F264AED6}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\menubuttonlinker.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7C7A7E78-7A11-C99A-654E-3175F264AED6}|Assembly-CSharp.csproj|C:\\Users\\avcio\\Documents\\GitHub\\ReactiveMusic\\assets\\scripts\\menuscenecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7C7A7E78-7A11-C99A-654E-3175F264AED6}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\menuscenecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7C7A7E78-7A11-C99A-654E-3175F264AED6}|Assembly-CSharp.csproj|C:\\Users\\avcio\\Documents\\GitHub\\ReactiveMusic\\assets\\scripts\\spotifymoodmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7C7A7E78-7A11-C99A-654E-3175F264AED6}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\spotifymoodmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7C7A7E78-7A11-C99A-654E-3175F264AED6}|Assembly-CSharp.csproj|c:\\users\\avcio\\documents\\github\\reactivemusic\\assets\\scripts\\menuscenemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7C7A7E78-7A11-C99A-654E-3175F264AED6}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\menuscenemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7C7A7E78-7A11-C99A-654E-3175F264AED6}|Assembly-CSharp.csproj|C:\\Users\\avcio\\Documents\\GitHub\\ReactiveMusic\\assets\\scripts\\menuautosetup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7C7A7E78-7A11-C99A-654E-3175F264AED6}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\menuautosetup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2DDD5CE5-9500-B3E2-10CF-1BD2CC4296F4}|Assembly-CSharp-Editor.csproj|C:\\Users\\avcio\\Documents\\GitHub\\ReactiveMusic\\assets\\editor\\repairspotifyconnections.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{2DDD5CE5-9500-B3E2-10CF-1BD2CC4296F4}|Assembly-CSharp-Editor.csproj|solutionrelative:assets\\editor\\repairspotifyconnections.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -42,11 +70,102 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MenuButtonHandler.cs",
+              "DocumentMoniker": "C:\\Users\\avcio\\Documents\\GitHub\\ReactiveMusic\\Assets\\Scripts\\MenuButtonHandler.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\MenuButtonHandler.cs",
+              "ToolTip": "C:\\Users\\avcio\\Documents\\GitHub\\ReactiveMusic\\Assets\\Scripts\\MenuButtonHandler.cs",
+              "RelativeToolTip": "Assets\\Scripts\\MenuButtonHandler.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-24T03:17:47.768Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "MenuButtonLinker.cs",
+              "DocumentMoniker": "C:\\Users\\avcio\\Documents\\GitHub\\ReactiveMusic\\Assets\\Scripts\\MenuButtonLinker.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\MenuButtonLinker.cs",
+              "ToolTip": "C:\\Users\\avcio\\Documents\\GitHub\\ReactiveMusic\\Assets\\Scripts\\MenuButtonLinker.cs",
+              "RelativeToolTip": "Assets\\Scripts\\MenuButtonLinker.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-24T03:17:33.273Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "MenuAction.cs",
+              "DocumentMoniker": "C:\\Users\\avcio\\Documents\\GitHub\\ReactiveMusic\\Assets\\Scripts\\MenuAction.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\MenuAction.cs",
+              "ToolTip": "C:\\Users\\avcio\\Documents\\GitHub\\ReactiveMusic\\Assets\\Scripts\\MenuAction.cs",
+              "RelativeToolTip": "Assets\\Scripts\\MenuAction.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-24T03:16:30.402Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "MenuSceneManager.cs",
+              "DocumentMoniker": "C:\\Users\\avcio\\Documents\\GitHub\\ReactiveMusic\\Assets\\Scripts\\MenuSceneManager.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\MenuSceneManager.cs",
+              "ToolTip": "C:\\Users\\avcio\\Documents\\GitHub\\ReactiveMusic\\Assets\\Scripts\\MenuSceneManager.cs",
+              "RelativeToolTip": "Assets\\Scripts\\MenuSceneManager.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-24T03:08:47.271Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "MenuAutoSetup.cs",
+              "DocumentMoniker": "C:\\Users\\avcio\\Documents\\GitHub\\ReactiveMusic\\Assets\\Scripts\\MenuAutoSetup.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\MenuAutoSetup.cs",
+              "ToolTip": "C:\\Users\\avcio\\Documents\\GitHub\\ReactiveMusic\\Assets\\Scripts\\MenuAutoSetup.cs",
+              "RelativeToolTip": "Assets\\Scripts\\MenuAutoSetup.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-24T03:07:15.761Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "MenuSceneController.cs",
+              "DocumentMoniker": "C:\\Users\\avcio\\Documents\\GitHub\\ReactiveMusic\\Assets\\Scripts\\MenuSceneController.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\MenuSceneController.cs",
+              "ToolTip": "C:\\Users\\avcio\\Documents\\GitHub\\ReactiveMusic\\Assets\\Scripts\\MenuSceneController.cs",
+              "RelativeToolTip": "Assets\\Scripts\\MenuSceneController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-24T03:05:38.03Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "SpotifyMoodManager.cs",
+              "DocumentMoniker": "C:\\Users\\avcio\\Documents\\GitHub\\ReactiveMusic\\Assets\\Scripts\\SpotifyMoodManager.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\SpotifyMoodManager.cs",
+              "ToolTip": "C:\\Users\\avcio\\Documents\\GitHub\\ReactiveMusic\\Assets\\Scripts\\SpotifyMoodManager.cs",
+              "RelativeToolTip": "Assets\\Scripts\\SpotifyMoodManager.cs",
+              "ViewState": "AgIAAHwBAAAAAAAAAAAjwH0BAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-18T23:53:38.556Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
               "Title": "RepairSpotifyConnections.cs",
               "DocumentMoniker": "C:\\Users\\avcio\\Documents\\GitHub\\ReactiveMusic\\Assets\\Editor\\RepairSpotifyConnections.cs",
               "RelativeDocumentMoniker": "Assets\\Editor\\RepairSpotifyConnections.cs",
@@ -54,12 +173,11 @@
               "RelativeToolTip": "Assets\\Editor\\RepairSpotifyConnections.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-17T00:24:48.613Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-17T00:24:48.613Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 8,
               "Title": "SpotifyFullUI.cs",
               "DocumentMoniker": "C:\\Users\\avcio\\Documents\\GitHub\\ReactiveMusic\\Assets\\Scripts\\SpotifyFullUI.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\SpotifyFullUI.cs",
@@ -71,7 +189,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 9,
               "Title": "SinglePlaylistSelectableTrack.cs",
               "DocumentMoniker": "C:\\Users\\avcio\\Documents\\GitHub\\ReactiveMusic\\Assets\\Spotify4Unity\\Examples\\Scripts\\Spotify App\\Prefabs\\SinglePlaylistSelectableTrack.cs",
               "RelativeDocumentMoniker": "Assets\\Spotify4Unity\\Examples\\Scripts\\Spotify App\\Prefabs\\SinglePlaylistSelectableTrack.cs",
@@ -83,7 +201,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 10,
               "Title": "VRKeyboard.cs",
               "DocumentMoniker": "C:\\Users\\avcio\\Documents\\GitHub\\ReactiveMusic\\Assets\\Scripts\\VRKeyboard.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\VRKeyboard.cs",
@@ -95,7 +213,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 11,
               "Title": "SpotifyPlayerController.cs",
               "DocumentMoniker": "C:\\Users\\avcio\\Documents\\GitHub\\ReactiveMusic\\Assets\\Spotify4Unity\\Examples\\Scripts\\Spotify App\\SpotifyPlayerController.cs",
               "RelativeDocumentMoniker": "Assets\\Spotify4Unity\\Examples\\Scripts\\Spotify App\\SpotifyPlayerController.cs",
@@ -107,7 +225,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 12,
               "Title": "VRButtonLinker.cs",
               "DocumentMoniker": "C:\\Users\\avcio\\Documents\\GitHub\\ReactiveMusic\\Assets\\Scripts\\VRButtonLinker.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\VRButtonLinker.cs",
@@ -119,7 +237,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 13,
               "Title": "XRBaseInteractor.deprecated.cs",
               "DocumentMoniker": "C:\\Users\\avcio\\Documents\\GitHub\\ReactiveMusic\\Library\\PackageCache\\com.unity.xr.interaction.toolkit@7faefd988174\\Runtime\\Interaction\\Interactors\\XRBaseInteractor.deprecated.cs",
               "RelativeDocumentMoniker": "Library\\PackageCache\\com.unity.xr.interaction.toolkit@7faefd988174\\Runtime\\Interaction\\Interactors\\XRBaseInteractor.deprecated.cs",
@@ -127,12 +245,11 @@
               "RelativeToolTip": "Library\\PackageCache\\com.unity.xr.interaction.toolkit@7faefd988174\\Runtime\\Interaction\\Interactors\\XRBaseInteractor.deprecated.cs",
               "ViewState": "AgIAAHQBAAAAAAAAAAAmwIQBAABJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-06T18:32:17.201Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-06T18:32:17.201Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 14,
               "Title": "XRBaseInteractable.deprecated.cs",
               "DocumentMoniker": "C:\\Users\\avcio\\Documents\\GitHub\\ReactiveMusic\\Library\\PackageCache\\com.unity.xr.interaction.toolkit@7faefd988174\\Runtime\\Interaction\\Interactables\\XRBaseInteractable.deprecated.cs",
               "RelativeDocumentMoniker": "Library\\PackageCache\\com.unity.xr.interaction.toolkit@7faefd988174\\Runtime\\Interaction\\Interactables\\XRBaseInteractable.deprecated.cs",
@@ -140,8 +257,7 @@
               "RelativeToolTip": "Library\\PackageCache\\com.unity.xr.interaction.toolkit@7faefd988174\\Runtime\\Interaction\\Interactables\\XRBaseInteractable.deprecated.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-06T18:28:59.414Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-06T18:28:59.414Z"
             }
           ]
         }

@@ -42,7 +42,8 @@ public class ReactiveLight : MonoBehaviour
 
         if (reactIntensity)
         {
-            float targetIntensity = Mathf.Lerp(minIntensity, maxIntensity, data.amplitude * intensityMultiplier);
+            float safeMinIntensity = Mathf.Max(minIntensity, 0.8f);
+            float targetIntensity = Mathf.Lerp(safeMinIntensity, maxIntensity, data.amplitude * intensityMultiplier);
             // Fast smoothing for intensity to avoid bad strobe in VR
             myLight.intensity = Mathf.Lerp(myLight.intensity, targetIntensity, Time.deltaTime * 15f); 
         }

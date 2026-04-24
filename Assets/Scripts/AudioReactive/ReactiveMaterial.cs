@@ -30,7 +30,9 @@ public class ReactiveMaterial : MonoBehaviour
     {
         if (data == null || mat == null) return;
 
-        float targetEmission = Mathf.Lerp(minEmission, maxEmission, data.amplitude);
+        // Işıkların tamamen sönmemesi için Inspector'daki minEmission değeri 0 olsa bile en az 1.0f seviyesinde kalmasını sağlıyoruz.
+        float safeMinEmission = Mathf.Max(minEmission, 1.0f);
+        float targetEmission = Mathf.Lerp(safeMinEmission, maxEmission, data.amplitude);
         currentEmission = Mathf.Lerp(currentEmission, targetEmission, Time.deltaTime * smoothness);
 
         mat.SetColor("_EmissionColor", baseEmissionColor * currentEmission);

@@ -389,34 +389,34 @@ public class SpotifyMoodManager : MonoBehaviour
         if (energy >= 0.5f && valence >= 0.5f)
         {
             baseHsvVal = 1.0f; baseHsvSat = 0.9f;
-            speed = 0.35f; colorTemperature = 0.8f;
+            speed = 0.65f; colorTemperature = 0.8f;
             gain = Mathf.Lerp(1.2f, 2.0f, energy);
             fallSpeed = Mathf.Lerp(3.0f, 5.0f, energy);
-            rxSmoothSpeed = Mathf.Lerp(15f, 20f, energy);
+            rxSmoothSpeed = Mathf.Lerp(9f, 12f, energy);
             Debug.Log("[MoodManager] MOD: Coskulu/Neseli rxSmooth:" + rxSmoothSpeed.ToString("F1"));
         }
         else if (energy >= 0.5f && valence < 0.5f)
         {
             baseHsvVal = 0.6f; baseHsvSat = 1.0f;
-            speed = 0.20f; colorTemperature = 1.0f;
+            speed = 0.35f; colorTemperature = 1.0f;
             gain = Mathf.Lerp(0.8f, 1.3f, energy);
             fallSpeed = Mathf.Lerp(2.0f, 3.5f, energy);
-            rxSmoothSpeed = Mathf.Lerp(6f, 10f, energy);
+            rxSmoothSpeed = Mathf.Lerp(6f, 9f, energy);
             Debug.Log("[MoodManager] MOD: Agresif/Karanlik rxSmooth:" + rxSmoothSpeed.ToString("F1"));
         }
         else if (energy < 0.5f && valence >= 0.5f)
         {
-            baseHsvVal = 0.8f; baseHsvSat = 0.5f;
-            speed = 0.002f; colorTemperature = -0.7f;
+            baseHsvVal = 0.8f; baseHsvSat = 0.6f;
+            speed = 0.15f; colorTemperature = -0.7f;
             gain = Mathf.Lerp(0.7f, 1.0f, energy);
             fallSpeed = Mathf.Lerp(1.0f, 2.0f, energy);
-            rxSmoothSpeed = Mathf.Lerp(3f, 6f, energy);
+            rxSmoothSpeed = Mathf.Lerp(4f, 6f, energy);
             Debug.Log("[MoodManager] MOD: Huzurlu/Sakin rxSmooth:" + rxSmoothSpeed.ToString("F1"));
         }
         else
         {
             baseHsvVal = 0.4f; baseHsvSat = 0.8f;
-            speed = 0.005f; colorTemperature = -1.0f;
+            speed = 0.05f; colorTemperature = -1.0f;
             gain = Mathf.Lerp(0.4f, 0.7f, energy);
             fallSpeed = Mathf.Lerp(0.5f, 1.2f, energy);
             rxSmoothSpeed = Mathf.Lerp(2f, 4f, energy);
@@ -443,27 +443,60 @@ public class SpotifyMoodManager : MonoBehaviour
         alphas[0] = new GradientAlphaKey(1f, 0f);
         alphas[1] = new GradientAlphaKey(1f, 1f);
 
-        float baseHue;
-        if (temperature >= 0.5f)
+        if (Mathf.Approximately(temperature, 0.8f))
         {
-            float[] hues = { 0.0f, 0.05f, 0.10f, 0.15f, 0.90f, 0.95f };
-            baseHue = hues[Random.Range(0, hues.Length)];
+            // Happy mod: Her renkten (yeşil, mavi, kırmızı vb.) olsun
+            float startHue = Random.value;
+            for (int i = 0; i < 4; i++)
+            {
+                // Renkleri tüm spektruma yayarak gökkuşağı tarzı bir geçiş oluştur
+                float h = Mathf.Repeat(startHue + (i * 0.25f), 1f);
+                colors[i] = new GradientColorKey(Color.HSVToRGB(h, s, v), i / 3f);
+            }
         }
-        else if (temperature <= -0.5f)
+        else if (Mathf.Approximately(temperature, 1.0f))
         {
-            float[] hues = { 0.50f, 0.55f, 0.60f, 0.65f, 0.70f, 0.75f };
-            baseHue = hues[Random.Range(0, hues.Length)];
+            // Aggressive mod: %50 Kırmızı, %30 Turuncu, %20 Mor
+            float[] allowedHues = { 0.0f, 0.0f, 0.01f, 0.02f, 0.03f, 0.04f, 0.05f, 0.06f, 0.76f, 0.80f };
+            for (int i = 0; i < 4; i++)
+            {
+                float h = allowedHues[Random.Range(0, allowedHues.Length)];
+                colors[i] = new GradientColorKey(Color.HSVToRGB(h, s, v), i / 3f);
+            }
+        }
+        else if (Mathf.Approximately(temperature, -0.7f))
+        {
+            // Calm mod: Sadece Açık Mavi / Turkuaz (0.50 - 0.56) tonları. Mor asla yok.
+            float[] allowedHues = { 0.50f, 0.52f, 0.54f, 0.56f };
+            for (int i = 0; i < 4; i++)
+            {
+                float h = allowedHues[Random.Range(0, allowedHues.Length)];
+                // Beyaz-Mavi karışımı hissiyatını artırmak için saturation'ı rastgele biraz daha kısıyoruz
+                float currentS = s * Random.Range(0.6f, 1.0f); 
+                colors[i] = new GradientColorKey(Color.HSVToRGB(h, currentS, v), i / 3f);
+            }
         }
         else
         {
-            float[] hues = { 0.25f, 0.30f, 0.35f, 0.40f, 0.45f };
-            baseHue = hues[Random.Range(0, hues.Length)];
-        }
+            float baseHue;
+            if (temperature <= -0.5f)
+            {
+                // Melancholic (-1.0)
+                float[] hues = { 0.50f, 0.55f, 0.60f, 0.65f, 0.70f, 0.75f };
+                baseHue = hues[Random.Range(0, hues.Length)];
+            }
+            else
+            {
+                // Fallback / Unknown
+                float[] hues = { 0.25f, 0.30f, 0.35f, 0.40f, 0.45f };
+                baseHue = hues[Random.Range(0, hues.Length)];
+            }
 
-        for (int i = 0; i < 4; i++)
-        {
-            float h = Mathf.Repeat(baseHue + (Random.value - 0.5f) * 0.2f, 1f);
-            colors[i] = new GradientColorKey(Color.HSVToRGB(h, s, v), i / 3f);
+            for (int i = 0; i < 4; i++)
+            {
+                float h = Mathf.Repeat(baseHue + (Random.value - 0.5f) * 0.2f, 1f);
+                colors[i] = new GradientColorKey(Color.HSVToRGB(h, s, v), i / 3f);
+            }
         }
 
         g.SetKeys(colors, alphas);

@@ -8,7 +8,7 @@ public class MenuAutoSetup : MonoBehaviour
     void Start()
     {
         SetupButton("MainVRButton", "Main VR Scene");
-        SetupButton("ClubButton", "Club");
+        SetupButton("GridButton", "Grid");
     }
 
     void SetupButton(string name, string scene)
