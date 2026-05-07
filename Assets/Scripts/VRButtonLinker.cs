@@ -119,5 +119,13 @@ public class VRButtonLinker : MonoBehaviour, IPointerClickHandler, IPointerEnter
             }
             btn.onClick.Invoke();
         }
+        else
+        {
+            Toggle tgl = GetComponent<Toggle>();
+            if (tgl != null && tgl.interactable)
+            {
+                tgl.isOn = !tgl.isOn;
+            }
+        }
     }
 }

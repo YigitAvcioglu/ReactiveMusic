@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEditor;
@@ -76,3 +77,4 @@ public class SpotifyButtonSetup
         Debug.Log("VR Toggle Button setup complete!");
     }
 }
+#endif

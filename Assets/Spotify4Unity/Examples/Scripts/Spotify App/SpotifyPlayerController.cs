@@ -133,6 +133,8 @@ public class SpotifyPlayerController : SpotifyPlayerListener
 
         if (_volumeSlider != null)
         {
+            _volumeSlider.minValue = 0;
+            _volumeSlider.maxValue = 100;
             _volumeSlider.wholeNumbers = true;
             _volumeSlider.interactable = true;
             _volumeSlider.onValueChanged.AddListener(this.OnVolumeSliderValueChanged);

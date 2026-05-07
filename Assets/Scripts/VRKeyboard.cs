@@ -26,7 +26,7 @@ public class VRKeyboard : MonoBehaviour
     private static readonly string[] ROW3 = { "a", "s", "d", "f", "g", "h", "j", "k", "l" };
     private static readonly string[] ROW4 = { "z", "x", "c", "v", "b", "n", "m" };
 
-    void Start()
+    void Awake()
     {
         BuildKeyboard();
         HideKeyboard();
